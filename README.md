@@ -23,7 +23,6 @@ El archivo debe almacenarse en la siguiente ubicación:
 
 C:\BD2\data\ventas.csv (esto tiene q ser la ruta de datos especificos)
 
-
 2. Configurar MySQL
 Crear la carpeta de trabajo y verificar que MySQL Server se encuentre en ejecución.
 
@@ -40,33 +39,21 @@ Ejecutar:
 Ejecutar: 
 
 7. Ejecutar proceso ETL
-Ejemplo:
-
-LOAD DATA INFILE esto es el privado
-
+Ejecutar: LOAD DATA INFILE esto es el privado
 Ejecutar:
 
-04_etl.sql
-
-8. Crear procedimientos almacenados
+9. Crear procedimientos almacenados
 Ejecutar:
-
-05_procedimientos.sql
 
 9. Crear triggers
 Ejecutar:
 
-06_triggers.sql
-
 10. Ejecutar pruebas
 Ejecutar:
-
-07_pruebas.sql
 
 11. Validar la carga de datos
 Ejecutar:
 
-08_validacion_etl.sql
 
 
 
