@@ -2,6 +2,10 @@ Proyecto Base de Datos de Ventas - Comercializadora del Norte, S.A.
 Bases de Datos II - Fase 1
 
 Integrantes:
+Astrid Gabriela Rivera Vásquez      - 2450042 
+Christian Eduardo Rivas Sontay      - 2450503 
+Josue Daniel Perez Suruy            - 2427098
+
 
 
 1. Archivos del proyecto
