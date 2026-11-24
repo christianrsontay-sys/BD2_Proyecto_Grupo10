@@ -1,92 +1,67 @@
-const indicadores = async (req, res) => {
-    res.json({
-        reporte: "indicadores",
-        filtros: req.query,
-        datos: []
-    });
-};
 
-const ventasTiempo = async (req, res) => {
-    res.json({
-        reporte: "ventas-tiempo",
-        filtros: req.query,
-        datos: []
-    });
-};
-
-const ventasUbicacion = async (req, res) => {
-    res.json({
-        reporte: "ventas-ubicacion",
-        filtros: req.query,
-        datos: []
-    });
-};
-
-const ventasProducto = async (req, res) => {
-    res.json({
-        reporte: "ventas-producto",
-        filtros: req.query,
-        datos: []
-    });
-};
-
-const topProductos = async (req, res) => {
-    res.json({
-        reporte: "top-productos",
-        filtros: req.query,
-        datos: []
-    });
-};
+const pool = require('../config/database');
 
 const vendedores = async (req, res) => {
-    res.json({
-        reporte: "vendedores",
-        filtros: req.query,
-        datos: []
-    });
-};
+    try {
+        const [rows] = await pool.query(`
+            SELECT
+                v.codigo_vendedor,
+                v.nombre_completo,
+                v.codigo_sucursal,
+                v.nombre_sucursal,
+                COUNT(DISTINCT f.numero_factura) AS total_facturas,
+                SUM(f.cantidad) AS unidades_vendidas,
+                SUM(f.monto_linea) AS monto_total
+            FROM dw_ventas.dim_vendedor v
+            LEFT JOIN dw_ventas.fact_ventas f
+                ON v.sk_vendedor = f.sk_vendedor
+            GROUP BY
+                v.sk_vendedor,
+                v.codigo_vendedor,
+                v.nombre_completo,
+                v.codigo_sucursal,
+                v.nombre_sucursal
+            ORDER BY monto_total DESC
+        `);
 
-const clientes = async (req, res) => {
-    res.json({
-        reporte: "clientes",
-        filtros: req.query,
-        datos: []
-    });
-};
-
-const comparativo = async (req, res) => {
-    res.json({
-        reporte: "comparativo",
-        filtros: req.query,
-        datos: []
-    });
+        res.json({
+            reporte: 'vendedores',
+            filtros: req.query,
+            datos: rows
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 const metodosPago = async (req, res) => {
-    res.json({
-        reporte: "metodos-pago",
-        filtros: req.query,
-        datos: []
-    });
-};
+    try {
+        const [rows] = await pool.query(`
+            SELECT
+                mp.nombre_metodo,
+                COUNT(DISTINCT f.numero_factura) AS total_facturas,
+                SUM(f.cantidad) AS unidades_vendidas,
+                SUM(f.monto_linea) AS monto_total
+            FROM dw_ventas.dim_metodo_pago mp
+            LEFT JOIN dw_ventas.fact_ventas f
+                ON mp.sk_metodo_pago = f.sk_metodo_pago
+            GROUP BY
+                mp.sk_metodo_pago,
+                mp.nombre_metodo
+            ORDER BY monto_total DESC
+        `);
 
-const tablaCruzada = async (req, res) => {
-    res.json({
-        reporte: "tabla-cruzada",
-        filtros: req.query,
-        datos: []
-    });
+        res.json({
+            reporte: 'metodos-pago',
+            filtros: req.query,
+            datos: rows
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 module.exports = {
-    indicadores,
-    ventasTiempo,
-    ventasUbicacion,
-    ventasProducto,
-    topProductos,
     vendedores,
-    clientes,
-    comparativo,
-    metodosPago,
-    tablaCruzada
+    metodosPago
 };
