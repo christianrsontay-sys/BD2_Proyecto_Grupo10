@@ -33,3 +33,8 @@ const estado = async (req, res) => {
 module.exports = {
     estado
 };
+
+
+module.exports = {
+    estado
+};
