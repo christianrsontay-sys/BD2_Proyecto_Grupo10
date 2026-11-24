@@ -8,6 +8,6 @@ const estadoRoutes = require('./routes/estado.routes');
 const reportesRoutes = require('./routes/reportes.routes');
 
 app.use('/api', estadoRoutes);
-app.use('/api', reportesRoutes);
+app.use('/api/reportes', reportesRoutes);
 
 module.exports = app;
